@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import List from './List';
 import Form from './Form';
-import TodoContext from "../contexts/TodoProvider";
+import { TodoContext } from '../contexts/todoProvider';
 
 const FormList = () => {
    const {

@@ -1,14 +1,20 @@
 import React from 'react';
-import TodoProvider from './contexts/TodoProvider'; // Adjust the import path if necessary
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import 'Routes' instead of 'Switch'
+import TodoProvider from './contexts/todoProvider';
 import Home from './pages/home';
+import AddTask from './pages/addTask';
+// import AddTask from './pages/AddTask'; 
 
 function App() {
   return (
-    <TodoProvider>
-      <div className="">
-        <Home />
-      </div>
-    </TodoProvider>
+    <Router>
+      <TodoProvider> 
+        <Routes> 
+          <Route path="/" element={<Home />} /> 
+          <Route path="/addTask" element={<AddTask/>} />
+        </Routes>
+      </TodoProvider>
+    </Router>
   );
 }
 

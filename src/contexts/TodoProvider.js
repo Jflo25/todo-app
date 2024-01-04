@@ -44,7 +44,15 @@ export const TodoProvider = ({ children }) => {
     event.preventDefault();
     // Implement logic to remove items based on searchValue
   };
-
+  const handleSubmit = (value) => {
+    const newItem = {
+      value,
+      completed: false,
+      id: `${Math.random()}-${Math.random()}`, // Unique ID for the item
+      priority: 1, // Default priority
+    };
+    setList([...list, newItem]);
+  };
   // Variable for sorting
   const [isSorted, setIsSorted] = useState(false);
 
@@ -53,17 +61,18 @@ export const TodoProvider = ({ children }) => {
     // Implement logic to sort the list based on isSorted
   };
 
-   const sortList = () => {
-    let sortList = list.filter((item) => item.value.includes(searchValue));
-
+  const sortList = () => {
+    let sortedList = list.filter((item) => item.value.includes(searchValue));
+  
     if (isSorted === "ascending") {
-      sortList.sort((a, b) => a.priority - b.priority);
+      sortedList.sort((a, b) => a.priority - b.priority);
     } else if (isSorted === "descending") {
-      sortList.sort((a, b) => b.priority - a.priority);
+      sortedList.sort((a, b) => b.priority - a.priority);
     }
-
-    return filteredList;
+  
+    return sortedList;
   };
+  
 
   return (
     <TodoContext.Provider
@@ -85,7 +94,8 @@ export const TodoProvider = ({ children }) => {
           handleSubmitRemove,
         },
         toggleSort,
-        sortList
+        sortList,
+        handleSubmit 
       }}
     >
       {children}

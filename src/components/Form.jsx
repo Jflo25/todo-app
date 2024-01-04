@@ -12,15 +12,22 @@ const Form = ({ onSubmit }) => {
    };
 
    return (
-      <form onSubmit={handleSubmit}>
-         <input
-            type="text"
-            placeholder="Add a new todo"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-         />
-         <button type="submit">Add</button>
-      </form>
+
+      <div className="container text-center">
+         <div className="header text-center">Add Task</div>
+         <p className=''>Task Name</p>
+         <form onSubmit={handleSubmit}>
+            <input
+               type="text"
+               placeholder="Name of Task... "
+               value={inputValue}
+               onChange={(e) => setInputValue(e.target.value)}
+               className=' '
+            />
+            <button type="submit">Add</button>
+         </form>
+
+      </div>
    );
 };
 

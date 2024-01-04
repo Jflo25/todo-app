@@ -1,17 +1,31 @@
 import React, { useContext } from 'react';
-import TodoContext from '../contexts/TodoProvider'; // Assuming import path
+import Priority from './priority';
+import { TodoContext } from '../contexts/todoProvider';
 
 const Item = ({ item }) => {
-   const { itemActions } = useContext(TodoContext);
+   const { itemActions, priorityActions } = useContext(TodoContext);
+
+   // Handle priority change
+   const handlePriorityChange = (e) => {
+      const newPriority = e.target.value;
+      itemActions.handlePriority(item.id, newPriority);
+   };
 
    return (
-      <li className=''>
-         {/* Display item text, priority, and completion status */}
+      <li className={item.completed ? 'item-completed' : ''}>
+         {/* Display item text */}
+         <span>{item.value}</span>
+         {/* Priority controls */}
+         <Priority
+            currentPriority={item.priority}
+            priorityChange={handlePriorityChange}
+         />
+         {/* Toggle completion status */}
          <button onClick={() => itemActions.handleToggle(item.id)}>
-            {/* Toggle button text */}
+            {item.completed ? 'Uncomplete' : 'Complete'}
          </button>
+         {/* Remove item */}
          <button onClick={() => itemActions.handleRemove(item.id)}>Remove</button>
-         {/* Priority controls if applicable */}
       </li>
    );
 };

@@ -28,6 +28,13 @@ const Form = ({ onSaveTask }) => {
       setDueTime(newTime);
    };
 
+   //CHECKLIST FUNCTION
+   const handleAddChecklistItem = () => {
+      if (newChecklistItem.trim() !== '') {
+         setChecklistItems([...checklistItems, newChecklistItem]);
+         setNewChecklistItem('');
+      }
+   };
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -48,19 +55,13 @@ const Form = ({ onSaveTask }) => {
       // Reset form fields if needed
    };
 
-   const handleAddChecklistItem = () => {
-      setChecklistItems([...checklistItems, newChecklistItem]);
-      setNewChecklistItem('');
-   };
-
    const handleAddTag = () => {
       setTags([...tags, newTag]);
       setNewTag('');
    };
 
    return (
-
-      <div className="container text-center mt-10 h-3/4 ">
+      <div className="container mx-auto mt-10 h-4/5">
          <div className="header text-center flex ">
             <button className="return-icon">
                <svg
@@ -76,29 +77,28 @@ const Form = ({ onSaveTask }) => {
                   />
                </svg>
             </button>
-            <h1 className='text-center w-1/4 m-auto'>Add Task</h1>
+            <h1 className='text-center font-bold text-2xl m-auto'>Add New Task</h1>
          </div>
 
-         <p className='text-left'>Task Name</p>
-         <form onSubmit={handleSubmit} className='text-left'>
-            {/* INPUT TASK */}
+         <form onSubmit={handleSubmit} className='text-left mt-10'>
+            <label className='text-lg font-medium'>Task Name</label>
             <input
                type="text"
-               placeholder="Name of Task... "
+               placeholder="Name of Task..."
+               className="w-full rounded-full border-gray-300 border p-4 mb-4"
                value={taskName}
                onChange={(e) => setTaskName(e.target.value)}
-               className="rounded-lg border-gray-300 border p-2"
             />
-            {/* PRIORITIY OF TASK */}
-            <div className='task-priority'>
-               <label>Priority:</label>
-               <div className="flex">
+
+            {/* Priority Selection */}
+            <div className='task-priority mb-4'>
+               <label className="block mb-2 text-lg font-medium">Priority:</label>
+               <div className="flex justify-center">
                   {priorityOptions.map((option) => (
                      <button
                         key={option}
                         type="button"
-                        className={`flex-grow font-medium rounded-full py-2 w-1/12 text-1xl mx-1 ${priority === option.toString() ? 'bg-blue-400' : 'bg-blue-200'
-                           }`}
+                        className={`rounded-full text-center w-7 h-7 bg-blue-100 mx-1 ${priority === option.toString() ? 'bg-blue-300' : ''}`}
                         onClick={() => setPriority(option.toString())}
                      >
                         {option}
@@ -106,16 +106,16 @@ const Form = ({ onSaveTask }) => {
                   ))}
                </div>
             </div>
-            {/* COMPLEXITY OF TASK */}
-            <div className='task-complexity'>
-               <label> Select Complexity Level</label>
-               <div className="flex">
+
+            {/* Complexity Selection */}
+            <div className='task-complexity mb-4'>
+               <label className="block mb-2 text-lg font-medium">Select Complexity Level</label>
+               <div className="flex justify-center">
                   {complexityOptions.map((option) => (
                      <button
                         key={option}
                         type="button"
-                        className={`flex-grow font-medium rounded-full py-2 w-1/12 text-1xl mx-1 ${complexity === option.toString() ? 'bg-blue-400' : 'bg-blue-200'
-                           }`}
+                        className={`rounded-full text-center w-7 h-7 bg-blue-100 mx-1 ${complexity === option.toString() ? 'bg-blue-300' : ''}`}
                         onClick={() => setComplexity(option.toString())}
                      >
                         {option}
@@ -123,37 +123,79 @@ const Form = ({ onSaveTask }) => {
                   ))}
                </div>
             </div>
-            <div className="task-due-dates flex justify-between">
-               <div className="due-date">
-                  <h3>Select Due Date</h3>
+
+            {/* Due Date and Time Inputs */}
+            <div className="task-due-dates flex justify-between mb-4">
+               <label className='text-lg font-medium'>Select Due Date</label>
+               <input
+                  type="text"
+                  placeholder="Due Date (DD/MM/YY)"
+                  className="rounded-full border-gray-300 border p-4 w-full mr-2"
+                  value={dueDate}
+                  onChange={handleDueDateChange}
+               />
+               <label className='text-lg font-medium'>Select Time</label>
+               <input
+                  type="text"
+                  placeholder="00:00"
+                  className="rounded-full border-gray-300 border p-4 w-full ml-2"
+                  value={dueTime}
+                  onChange={handleDueTimeChange}
+               />
+            </div>
+
+            {/* Checklist Input */}
+            <div className="mb-4">
+               <label className='text-lg font-medium'>Add Checklist</label>
+               <div className="flex items-center">
                   <input
                      type="text"
-                     placeholder="Due Date (DD/MM/YY)"
-                     value={dueDate}
-                     onChange={handleDueDateChange}
-                     className="rounded-lg border-gray-300 border p-2"
+                     placeholder="Add checklist item..."
+                     className="flex-grow rounded-l-full border-gray-300 border p-4"
+                     value={newChecklistItem}
+                     onChange={(e) => setNewChecklistItem(e.target.value)}
                   />
+                  <button
+                     type="button"
+                     onClick={handleAddChecklistItem}
+                     className="bg-blue-500 rounded-r-full w-10 h-10 flex justify-center items-center text-white"
+                  >
+                     <span>+</span>
+                  </button>
                </div>
-               <div className="time">
-                  <h3>Select Time</h3>
-                  <div className="display-time">
-                     <input
-                        type="text"
-                        placeholder="Due Time (HH:MM)"
-                        value={dueTime}
-                        onChange={handleDueTimeChange}
-                        className="rounded-lg border-gray-300 border p-2"
-                     />
-                  </div>
-               </div>
+               <ul className="list-disc ml-5 mt-2">
+                  {checklistItems.map((item, index) => (
+                     <li key={index}>{item}</li>
+                  ))}
+               </ul>
             </div>
-            <button type="submit" className="...">
-               Save Task
-            </button>
-         </form>
 
+            {/* Tag Input */}
+
+            <div className="mb-4">
+               <label className='text-lg font-medium'>Add Tags</label>
+               <input
+                  type="text"
+                  placeholder="Add tag..."
+                  className="rounded-full border-gray-300 border p-4 w-full"
+                  value={newTag}
+                  onChange={(e) => setNewTag(e.target.value)}
+               />
+            </div>
+
+            {/* Save Task Button */}
+            <div className="text-center">
+               <button
+                  type="submit"
+                  className="bg-blue-500 text-white font-bold py-4 px-8 rounded-full w-auto"
+               >
+                  Save Task
+               </button>
+            </div>
+         </form>
       </div>
    );
+
 };
 
 export default Form;

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import List from './List';
 import Form from './form';
 import { TodoContext } from '../contexts/todoProvider';
 

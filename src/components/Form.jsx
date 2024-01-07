@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { TodoContext } from '../contexts/todoProvider';
-import Priority from './priority'; // Import the Priority component
+import { useNavigate } from 'react-router-dom';
+
 
 const Form = ({ onSaveTask }) => {
    const [taskName, setTaskName] = useState('');
@@ -15,6 +16,12 @@ const Form = ({ onSaveTask }) => {
 
    const priorityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
    const complexityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+   const navigate = useNavigate();
+
+   const navigateHome = () => {
+      navigate('/'); // Assuming your home route is '/'
+   };
 
    //TIME FUNCTIONS
    const handleDueDateChange = (e) => {
@@ -52,7 +59,7 @@ const Form = ({ onSaveTask }) => {
          tags,
       };
       onSaveTask(newTask); // This function will handle task saving logic
-      // Reset form fields if needed
+      navigate('/');
    };
 
    const handleAddTag = () => {
@@ -63,7 +70,7 @@ const Form = ({ onSaveTask }) => {
    return (
       <div className="container mx-auto mt-10 h-4/5">
          <div className="header text-center flex ">
-            <button className="return-icon">
+            <button className="return-icon" onClick={navigateHome}>
                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -126,39 +133,43 @@ const Form = ({ onSaveTask }) => {
 
             {/* Due Date and Time Inputs */}
             <div className="task-due-dates flex justify-between mb-4">
-               <label className='text-lg font-medium'>Select Due Date</label>
-               <input
-                  type="text"
-                  placeholder="Due Date (DD/MM/YY)"
-                  className="rounded-full border-gray-300 border p-4 w-full mr-2"
-                  value={dueDate}
-                  onChange={handleDueDateChange}
-               />
-               <label className='text-lg font-medium'>Select Time</label>
-               <input
-                  type="text"
-                  placeholder="00:00"
-                  className="rounded-full border-gray-300 border p-4 w-full ml-2"
-                  value={dueTime}
-                  onChange={handleDueTimeChange}
-               />
+               <div className="w-full mr-2">
+                  <label className="text-lg font-medium block mb-2">Select Due Date</label>
+                  <input
+                     type="text"
+                     placeholder="DD/MM/YY"
+                     className="rounded-full border-gray-300 border p-4 w-full"
+                     value={dueDate}
+                     onChange={handleDueDateChange}
+                  />
+               </div>
+               <div className="w-full ml-2">
+                  <label className="text-lg font-medium block mb-2">Select Time</label>
+                  <input
+                     type="text"
+                     placeholder="00:00"
+                     className="rounded-full border-gray-300 border p-4 w-full"
+                     value={dueTime}
+                     onChange={handleDueTimeChange}
+                  />
+               </div>
             </div>
 
             {/* Checklist Input */}
-            <div className="mb-4">
-               <label className='text-lg font-medium'>Add Checklist</label>
-               <div className="flex items-center">
+            <div className="mb-4 relative">
+               <label className='text-lg font-medium block mb-2'>Add Checklist</label>
+               <div className="flex items-center border border-gray-300 rounded-full">
                   <input
                      type="text"
                      placeholder="Add checklist item..."
-                     className="flex-grow rounded-l-full border-gray-300 border p-4"
+                     className="flex-grow rounded-l-full pl-4 pr-10 py-4 focus:outline-none"
                      value={newChecklistItem}
                      onChange={(e) => setNewChecklistItem(e.target.value)}
                   />
                   <button
                      type="button"
                      onClick={handleAddChecklistItem}
-                     className="bg-blue-500 rounded-r-full w-10 h-10 flex justify-center items-center text-white"
+                     className="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white mr-2"
                   >
                      <span>+</span>
                   </button>
@@ -170,14 +181,15 @@ const Form = ({ onSaveTask }) => {
                </ul>
             </div>
 
+
             {/* Tag Input */}
 
             <div className="mb-4">
-               <label className='text-lg font-medium'>Add Tags</label>
+               <label className='text-lg font-medium '>Add Tags</label>
                <input
                   type="text"
                   placeholder="Add tag..."
-                  className="rounded-full border-gray-300 border p-4 w-full"
+                  className="rounded-full border-gray-300 border p-4 w-full mt-2"
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
                />

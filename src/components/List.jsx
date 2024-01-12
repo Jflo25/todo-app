@@ -1,19 +1,14 @@
+// List.js
 import React from 'react';
-import Item from './Item'; // Assuming Item is in the same directory
+import TaskCard from './taskCard'; // Adjust the path as needed
 
-const List = ({ list, handleToggle, handleRemove, handlePriority }) => {
+const List = ({ taskIds }) => {
    return (
-      <ul>
-         {list.map((item) => (
-            <Item
-               key={item.id}
-               item={item}
-               handleToggle={handleToggle}
-               handleRemove={handleRemove}
-               handlePriority={handlePriority}
-            />
+      <div>
+         {taskIds.map(taskId => (
+            <TaskCard key={taskId} taskId={taskId} />
          ))}
-      </ul>
+      </div>
    );
 };
 

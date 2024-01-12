@@ -1,136 +1,111 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { TodoContext } from '../contexts/todoProvider';
-import { useNavigate } from 'react-router-dom';
 
+const EditTaskCard = () => {
 
-const Form = () => {
-   const [taskName, setTaskName] = useState('');
-   const [priority, setPriority] = useState('1');
-   const [complexity, setComplexity] = useState('1');
-   const [dueDate, setDueDate] = useState('');
-   const [dueTime, setDueTime] = useState('');
-   const [checklistItems, setChecklistItems] = useState([]);
-   const [tags, setTags] = useState([]);
+   const { taskId } = useParams();
+   const { tasks, updateTask } = useContext(TodoContext);
+   const navigate = useNavigate();
+   const taskToEdit = tasks.find(task => task.id === taskId);
+   const initialTagsString = taskToEdit?.tags.join(', ') || '';
+
+   // State declarations
+   const [taskName, setTaskName] = useState(taskToEdit?.name || '');
+   const [priority, setPriority] = useState(taskToEdit?.priority || '1');
+   const [complexity, setComplexity] = useState(taskToEdit?.complexity || '1');
+   const [dueDate, setDueDate] = useState(taskToEdit?.dueDate || '');
+   const [dueTime, setDueTime] = useState(taskToEdit?.dueTime || '');
+   const [checklistItems, setChecklistItems] = useState(taskToEdit?.checklistItems || []);
+   const [tags, setTags] = useState(taskToEdit?.tags || []);
    const [newChecklistItem, setNewChecklistItem] = useState('');
    const [newTag, setNewTag] = useState('');
    const [isFormValid, setIsFormValid] = useState(false);
+   const [tagInput, setTagInput] = useState(initialTagsString);
+
+   // Utility functions
+   const validTaskName = taskName => taskName.trim() !== '';
+   const validDueDate = dueDate => /^\d{4}-\d{2}-\d{2}$/.test(dueDate);
+   const validTime = dueTime => /^\d{2}:\d{2}$/.test(dueTime);
 
 
-   const { addTask } = useContext(TodoContext);
 
-   const priorityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-   const complexityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-   const navigate = useNavigate();
-
-   const navigateHome = () => {
-      navigate('/'); // Assuming your home route is '/'
-   };
-   //VALID FORM FUNCTION
-   const updateFormValidity = () => {
+   // Update form validity
+   useEffect(() => {
       const isValid = validTaskName(taskName) &&
          (!dueDate || validDueDate(dueDate)) &&
          (!dueTime || validTime(dueTime));
       setIsFormValid(isValid);
-   };
-   //TASK NAME 
-   const handleTaskNameChange = (e) => {
-      setTaskName(e.target.value);
-      updateFormValidity();
-   };
+   }, [taskName, dueDate, dueTime]);
 
-   //TIME FUNCTIONS
-   const handleDueDateChange = (e) => {
-      const newDate = e.target.value;
-      setDueDate(newDate);
-      updateFormValidity();
-   };
-   const handleDueTimeChange = (e) => {
-      const newTime = e.target.value;
-      setDueTime(newTime);
-      updateFormValidity();
-   };
-
-   //PRIORITY 
-   const handlePriorityChange = (option) => {
-      setPriority(option.toString());
-      updateFormValidity();
-   };
-   //COMPLEXITY 
-   const handleComplexityChange = (option) => {
-      setComplexity(option.toString());
-      updateFormValidity();
-   };
-
-   //CHECKLIST FUNCTION
+   // Event handlers
+   const handleTaskNameChange = e => setTaskName(e.target.value);
+   const handleDueDateChange = e => setDueDate(e.target.value);
+   const handleDueTimeChange = e => setDueTime(e.target.value);
+   const handlePriorityChange = option => setPriority(option.toString());
+   const handleComplexityChange = option => setComplexity(option.toString());
    const handleAddChecklistItem = () => {
       if (newChecklistItem.trim() !== '') {
          setChecklistItems([...checklistItems, newChecklistItem]);
          setNewChecklistItem('');
       }
    };
-
-   //VALIDATION FUNCTIONS
-   const validTaskName = (taskName) => {
-      return taskName.trim() !== '';
+   const handleAddTag = () => {
+      setTags([...tags, newTag]);
+      setNewTag('');
+   };
+   const handleTagInputChange = e => {
+      setTagInput(e.target.value);
+   };
+   const removeChecklistItem = index => {
+      const newChecklistItems = checklistItems.filter((_, i) => i !== index);
+      setChecklistItems(newChecklistItems);
    };
 
-   const validDueDate = (dueDate) => {
-      // Simple validation for date format (you can make it more complex as needed)
-      return /^\d{4}-\d{2}-\d{2}$/.test(dueDate);
-   };
-
-   const validTime = (dueTime) => {
-      // Simple validation for time format (you can make it more complex as needed)
-      return /^\d{2}:\d{2}$/.test(dueTime);
-   };
-
-
-   const handleSubmit = (e) => {
+   // The rest of the handlers remain largely the same but adapted for editing
+   const handleSaveChanges = (e) => {
       e.preventDefault();
 
+      // Perform validation checks
       if (!validTaskName(taskName)) {
-         alert(`please enter a valid task name`)
+         alert(`please enter a valid task name`);
          return;
       }
-
       if (dueDate && !validDueDate(dueDate)) {
          alert('Please enter a valid due date.');
          return;
       }
-
       if (dueTime && !validTime(dueTime)) {
          alert('Please enter a valid due time.');
          return;
       }
+      // Split tag input string into an array
+      const updatedTags = tagInput.split(',').map(tag => tag.trim()).filter(tag => tag);
 
-      const tagArray = setTags.split(',').map(tag => tag.trim());
-
-      const newTask = {
+      // Construct the updated task object
+      const updatedTask = {
+         ...taskToEdit,
          name: taskName,
          priority,
          complexity,
          dueDate,
          dueTime,
          checklistItems,
-         tags: tagArray,
+         tags: updatedTags,
+
       };
 
-      addTask(newTask); // Add the new task using the function from TodoContext
-      navigate('/'); // Redirect to the home page
+      updateTask(taskId, updatedTask); // Implement this function in your context
+      navigate('/'); // Redirect to the home page after the update
    };
 
-   const handleAddTag = () => {
-      setTags([...tags, newTag]);
-      setNewTag('');
+   const navigateHome = () => {
+      navigate('/');
    };
 
-   const removeChecklistItem = (index) => {
-      const newChecklistItems = checklistItems.filter((_, i) => i !== index);
-      setChecklistItems(newChecklistItems);
-   };
-
-
+   // Options for priority and complexity
+   const priorityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+   const complexityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
    return (
       <div className="container mx-auto mt-10 h-4/5">
@@ -149,10 +124,10 @@ const Form = () => {
                   />
                </svg>
             </button>
-            <h1 className='text-center font-bold text-2xl m-auto'>Add New Task</h1>
+            <h1 className='text-center font-bold text-2xl m-auto'>Edit Task</h1>
          </div>
 
-         <form onSubmit={handleSubmit} className='text-left mt-10'>
+         <form onSubmit={handleSaveChanges} className='text-left mt-10'>
             <label className='text-lg font-medium'>Task Name</label>
             <input
                type="text"
@@ -259,13 +234,13 @@ const Form = () => {
             {/* Tag Input */}
 
             <div className="mb-4">
-               <label className='text-lg font-medium '>Add Tags</label>
+               <label className='text-lg font-medium'>Tags</label>
                <input
                   type="text"
-                  placeholder="Add tag..."
+                  placeholder="Enter tags, separated by commas..."
                   className="rounded-full border-gray-300 border p-4 w-full mt-2"
-                  value={newTag}
-                  onChange={(e) => setNewTag(e.target.value)}
+                  value={tagInput}
+                  onChange={handleTagInputChange}
                />
             </div>
 
@@ -274,15 +249,14 @@ const Form = () => {
                <button
                   type="submit"
                   className="bg-blue-500 text-white font-bold py-4 px-8 rounded-full w-auto"
-                  disabled={!isFormValid}
+                  onClick={handleSaveChanges}
                >
-                  Save Task
+                  Save Changes
                </button>
             </div>
          </form>
       </div>
    );
-
 };
 
-export default Form;
+export default EditTaskCard;

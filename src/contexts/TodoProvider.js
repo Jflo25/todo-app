@@ -3,105 +3,83 @@ import React, { createContext, useState } from 'react';
 export const TodoContext = createContext();
 
 export const TodoProvider = ({ children }) => {
-  const [list, setList] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
-  // Functions for item actions
-  const handleToggle = (itemId) => {
-    setList((prevList) =>
-      prevList.map((item) =>
-        item.id === itemId ? { ...item, completed: !item.completed } : item
-      )
+  // Function to add a new task
+  const addTask = (newTask) => {
+    setTasks([...tasks, { ...newTask, id: generateUniqueId(), completed: false }]);
+  };
+
+  //Function to edit a existing task
+  const updateTask = (taskId, updatedTask) => {
+    setTasks(currentTasks => 
+      currentTasks.map(task => task.id === taskId ? { ...task, ...updatedTask } : task)
     );
   };
+  
 
-  const handleRemove = (itemId) => {
-    setList((prevList) => prevList.filter((item) => item.id !== itemId));
+  // Function to toggle the completion status of a task
+  const toggleTaskCompletion = (taskId) => {
+    setTasks(tasks.map(task =>
+      task.id === taskId ? { ...task, completed: !task.completed } : task
+    ));
   };
 
-  const handlePriority = (itemId, newPriority) => {
-    setList((prevList) =>
-      prevList.map((item) =>
-        item.id === itemId ? { ...item, priority: newPriority } : item
-      )
-    );
+  // Function to remove a task
+  const removeTask = (taskId) => {
+    setTasks(tasks.filter(task => task.id !== taskId));
   };
 
-  // Variables for priority management
-  const [currentPriority, setCurrentPriority] = useState('');
-
-  const priorityChange = (newPriority) => {
-    setCurrentPriority(newPriority);
+  // Function to update the priority of a task
+  const updateTaskPriority = (taskId, newPriority) => {
+    setTasks(tasks.map(task =>
+      task.id === taskId ? { ...task, priority: newPriority } : task
+    ));
   };
 
-  // Variables and functions for search and removal
+  // State and function for search functionality (if needed)
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearchRemove = (event) => {
     setSearchValue(event.target.value);
   };
 
-  const handleSubmitRemove = (event) => {
-    event.preventDefault();
-    // Implement logic to remove items based on searchValue
-  };
-  const handleSubmit = (value) => {
-    const newItem = {
-      value,
-      completed: false,
-      id: `${Math.random()}-${Math.random()}`, // Unique ID for the item
-      priority: 1, // Default priority
-    };
-    setList([...list, newItem]);
-  };
-  // Variable for sorting
+  // State and function for sorting functionality (if needed)
   const [isSorted, setIsSorted] = useState(false);
 
   const toggleSort = () => {
     setIsSorted(!isSorted);
-    // Implement logic to sort the list based on isSorted
   };
 
-  const sortList = () => {
-    let sortedList = list.filter((item) => item.value.includes(searchValue));
-  
-    if (isSorted === "ascending") {
-      sortedList.sort((a, b) => a.priority - b.priority);
-    } else if (isSorted === "descending") {
-      sortedList.sort((a, b) => b.priority - a.priority);
-    }
-  
-    return sortedList;
+  const sortTasks = () => {
+
   };
-  
 
   return (
-    <TodoContext.Provider
-      value={{
-        list,
-        itemActions: {
-          handleToggle,
-          handleRemove,
-          handlePriority,
-        
-        },
-        priorityActions: {
-          currentPriority,
-          priorityChange,
-        },
-        searchActions: {
-          searchValue,
-          handleSearchRemove,
-          handleSubmitRemove,
-        },
-        toggleSort,
-        sortList,
-        handleSubmit 
-      }}
-    >
+    <TodoContext.Provider value={{
+      tasks,
+      addTask,
+      updateTask,
+      toggleTaskCompletion,
+      removeTask,
+      updateTaskPriority,
+      handleSearchRemove,
+      isSorted,
+      toggleSort,
+      sortTasks,
+      searchActions: {
+        searchValue,
+        handleSearchRemove
+      }
+    }}>
       {children}
     </TodoContext.Provider>
   );
 };
 
+const generateUniqueId = () => {
+  // Implement a unique ID generation logic
+  return `${Date.now()}-${Math.random()}`;
+};
 
 export default TodoProvider;

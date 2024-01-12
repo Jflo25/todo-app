@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TodoContext } from '../contexts/todoProvider';
+import List from '../components/List';
 
 const Home = () => {
-   const { sortList, toggleSort, searchActions } = useContext(TodoContext);
-   const sortedList = sortList();
+   const { sortTask, toggleSort, searchActions, tasks } = useContext(TodoContext);
    const navigate = useNavigate();
+
    const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
    const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
    const [selectedFilter, setSelectedFilter] = useState('All');
@@ -97,6 +98,7 @@ const Home = () => {
                + Add New Task
             </button>
          </div>
+         <List taskIds={tasks.map(task => task.id)} />
       </div>
    );
 };

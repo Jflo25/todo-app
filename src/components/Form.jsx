@@ -104,7 +104,7 @@ const Form = () => {
          return;
       }
 
-      const tagArray = setTags.split(',').map(tag => tag.trim());
+      const tagArray = newTag.split(',').map(tag => tag.trim());
 
       const newTask = {
          name: taskName,

@@ -1,8 +1,8 @@
 import React from 'react'
-
+import TaskDetailsCard from '../components/taskDetailsCard'
 const TaskDetails = () => {
    return (
-      <div><taskDetailsCard /></div>
+      <div><TaskDetailsCard /></div>
    )
 }
 

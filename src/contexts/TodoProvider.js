@@ -58,6 +58,7 @@ export const TodoProvider = ({ children }) => {
   return (
     <TodoContext.Provider value={{
       tasks,
+      setTasks,
       addTask,
       updateTask,
       toggleTaskCompletion,

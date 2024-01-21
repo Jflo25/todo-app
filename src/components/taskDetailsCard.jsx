@@ -80,6 +80,7 @@ const TaskDetailsCard = () => {
             <h2 className="text-2xl font-bold mb-2">{task.name}</h2>
             <div className="mb-4">
                <div className="text-lg text-gray-700">Due Date: {task.dueDate}</div>
+               <div className="text-lg text-gray-700">Due Time: {task.dueTime}</div>
                <div className="text-lg text-gray-700">Priority: High ({task.priority}/10)</div>
                <div className="text-lg text-gray-700">Complexity: High ({task.complexity}/10)</div>
                <div className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700 my-4">
@@ -94,14 +95,8 @@ const TaskDetailsCard = () => {
                   <CheckCircleIcon className={`h-6 w-6 ${item.isCompleted ? 'text-blue-600' : 'text-gray-600'}`} />
                </div>
             ))}
-            <div className="flex justify-between mt-4">
-               <button
-                  onClick={handleRepeat}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
-               >
-                  <RefreshIcon className="h-5 w-5 mr-2" />
-                  Repeat Task
-               </button>
+            <div className="flex justify-center mt-4">
+
                <button
                   onClick={handleDeleteTask}
                   className="inline-flex items-center px-4 py-2 mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"

@@ -37,7 +37,17 @@ export const TodoProvider = ({ children }) => {
     });
 };
 
-
+//power on function priority + complexity
+const sortTasksByPower = () => {
+  setTasks(currentTasks => {
+    return [...currentTasks].sort((a, b) => {
+      if (a.priority === b.priority) {
+        return b.complexity - a.complexity; // Sort by complexity if priorities are equal
+      }
+      return b.priority - a.priority; // Higher priority comes first
+    });
+  });
+};
 
 
   // Function to remove a task
@@ -96,6 +106,7 @@ const calculateCompletionPercentage = (task) => {
       sortTasks,
       completionPercentage,
       calculateCompletionPercentage,
+      sortTasksByPower,
       searchActions: {
         searchValue,
         handleSearchRemove

@@ -6,7 +6,7 @@ import SortTask from '../components/sortTask';
 import FilterTask from '../components/filterTask';
 
 const Home = () => {
-   const { tasks } = useContext(TodoContext);
+   const { tasks, sortTasksByPower } = useContext(TodoContext);
    const navigate = useNavigate();
 
    const [selectedTag, setSelectedTag] = useState('');
@@ -47,6 +47,7 @@ const Home = () => {
          <div className="dropdown mb-4">
             <div className="flex justify-between">
                <SortTask />
+               <button onClick={sortTasksByPower} className=" power-button inline-flex items-center justify-center w-48 bg-gray-300 h-12 px-4 rounded-full text-lg text-gray-700 font-medium">Power On</button>
                <FilterTask tags={allTags} onFilterSelect={handleFilterSelect} />
             </div>
          </div>

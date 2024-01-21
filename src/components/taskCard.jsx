@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ProgressCircle from './progressCircle';
 import { TodoContext } from '../contexts/todoProvider';
 import { useNavigate } from 'react-router-dom';
-import { PencilAltIcon, CheckCircleIcon, CalendarIcon, ArrowUpIcon, ArrowsExpandIcon } from '@heroicons/react/outline';
+import { PencilAltIcon, CheckCircleIcon, CalendarIcon, ArrowUpIcon, ClockIcon, ArrowsExpandIcon } from '@heroicons/react/outline';
 
 const TaskCard = ({ taskId }) => {
    const { tasks, calculateCompletionPercentage, updateTaskCompletionStatus } = useContext(TodoContext);
@@ -46,6 +46,10 @@ const TaskCard = ({ taskId }) => {
                <div className="flex items-center text-blue-500">
                   <CalendarIcon className="h-5 w-5 text-gray-500 mr-2" />
                   <span>Due Date: {task.dueDate}</span>
+               </div>
+               <div className="flex items-center text-blue-500">
+                  <ClockIcon className="h-5 w-5 text-gray-500 mr-2" />
+                  <span>Due Time: {task.dueTime}</span>
                </div>
                <div className="flex items-center">
                   <ArrowUpIcon className="h-5 w-5 text-gray-500 mr-2" />

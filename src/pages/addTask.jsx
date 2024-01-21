@@ -1,11 +1,14 @@
-import React from 'react'
-
+import React, { useContext } from 'react';
 import { TodoContext } from '../contexts/todoProvider';
-import FormList from '../components/FormList';
+import Form from '../components/form';
 const AddTask = () => {
+   const {
+      handleSubmit
+   } = useContext(TodoContext);
+
    return (
-      <div className='m-auto w-2/4 '>
-         <FormList />
+      <div className="form-list">
+         <Form onSubmit={handleSubmit} />
       </div>
    )
 }

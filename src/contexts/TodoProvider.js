@@ -1,10 +1,17 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const TodoContext = createContext();
 
 export const TodoProvider = ({ children }) => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
 
+  // Save tasks to local storage whenever they change
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
   // Function to add a new task
   const addTask = (newTask) => {
     setTasks([...tasks, { ...newTask, id: generateUniqueId(), completed: false }]);
@@ -19,11 +26,19 @@ export const TodoProvider = ({ children }) => {
   
 
   // Function to toggle the completion status of a task
-  const toggleTaskCompletion = (taskId) => {
-    setTasks(tasks.map(task =>
-      task.id === taskId ? { ...task, completed: !task.completed } : task
-    ));
-  };
+  const updateTaskCompletionStatus = (taskId, newStatus) => {
+    setTasks(currentTasks => {
+        return currentTasks.map(task => {
+            if (task.id === taskId) {
+                return { ...task, completed: newStatus };
+            }
+            return task;
+        });
+    });
+};
+
+
+
 
   // Function to remove a task
   const removeTask = (taskId) => {
@@ -54,6 +69,17 @@ export const TodoProvider = ({ children }) => {
   const sortTasks = () => {
 
   };
+  const completionPercentage = () => {
+    const completedTasks = tasks.filter(task => task.completed).length;
+    const totalTasks = tasks.length;
+    return totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+};
+
+const calculateCompletionPercentage = (task) => {
+  const completedItems = task.checklistItems.filter(item => item.isCompleted).length;
+  return (completedItems / task.checklistItems.length) * 100;
+};
+
 
   return (
     <TodoContext.Provider value={{
@@ -61,13 +87,15 @@ export const TodoProvider = ({ children }) => {
       setTasks,
       addTask,
       updateTask,
-      toggleTaskCompletion,
+      updateTaskCompletionStatus,
       removeTask,
       updateTaskPriority,
       handleSearchRemove,
       isSorted,
       toggleSort,
       sortTasks,
+      completionPercentage,
+      calculateCompletionPercentage,
       searchActions: {
         searchValue,
         handleSearchRemove

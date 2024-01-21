@@ -44,12 +44,14 @@ const EditTaskCard = () => {
    const handleDueTimeChange = e => setDueTime(e.target.value);
    const handlePriorityChange = option => setPriority(option.toString());
    const handleComplexityChange = option => setComplexity(option.toString());
+
    const handleAddChecklistItem = () => {
       if (newChecklistItem.trim() !== '') {
-         setChecklistItems([...checklistItems, newChecklistItem]);
+         setChecklistItems([...checklistItems, { text: newChecklistItem, isCompleted: false }]);
          setNewChecklistItem('');
       }
    };
+
    const handleAddTag = () => {
       setTags([...tags, newTag]);
       setNewTag('');
@@ -217,7 +219,7 @@ const EditTaskCard = () => {
                <ul className="list-disc ml-5 mt-2">
                   {checklistItems.map((item, index) => (
                      <div key={index} className="flex items-center mb-2 bg-gray-100 rounded-full pl-4 pr-2 py-2">
-                        <span className="flex-grow">{item}</span>
+                        <span className="flex-grow">{item.text}</span>
                         <button
                            onClick={() => removeChecklistItem(index)}
                            className="bg-red-500 rounded-full w-8 h-8 flex justify-center items-center text-white"

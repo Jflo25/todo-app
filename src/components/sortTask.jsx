@@ -42,7 +42,7 @@ const SortTask = () => {
    };
 
    return (
-      <div className="relative inline-block text-left">
+      <div className="relative inline-block text-left z-50">
          <button
             onClick={toggleDropdown}
             className="inline-flex items-center justify-center w-48 bg-gray-300 h-12 px-4 rounded-full text-lg text-gray-700 font-medium"

@@ -5,3 +5,25 @@
 .dropdown-option {
    @apply cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transform hover:scale-105 transition duration-150 ease-in-out;
 }
+
+.shadow-custom-loader {
+   box-shadow: -5px -5px 5px rgba(255, 255, 255, 0.1), 10px 10px 10px rgba(0, 0, 0, 0.4), inset -5px -5px 5px rgba(255, 255, 255, 0.2), inset 10px 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+.shadow-inner-loader {
+   box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 0.2), inset 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes loader-fill {
+   0% {
+      transform: rotate(0deg);
+   }
+
+   100% {
+      transform: rotate(360deg);
+   }
+}
+
+.animate-loader-fill {
+   animation: loader-fill 3.6s linear infinite;
+}

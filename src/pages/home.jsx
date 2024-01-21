@@ -6,21 +6,28 @@ import SortTask from '../components/sortTask';
 import FilterTask from '../components/filterTask';
 
 const Home = () => {
-   const { searchActions, tasks } = useContext(TodoContext);
+   const { tasks } = useContext(TodoContext);
    const navigate = useNavigate();
 
    const [selectedTag, setSelectedTag] = useState('');
+   const [searchInput, setSearchInput] = useState('');
 
    // Collect all unique tags from tasks
    const allTags = [...new Set(tasks.flatMap(task => task.tags))];
 
-   // Filter tasks based on the selected tag
-   const filteredTasks = selectedTag
-      ? tasks.filter(task => task.tags.includes(selectedTag))
-      : tasks;
+   // Filter tasks based on tag and search input
+   const filteredTasks = tasks.filter(task => {
+      const tagFilter = selectedTag ? task.tags.includes(selectedTag) : true;
+      const searchFilter = task.name.toLowerCase().includes(searchInput.toLowerCase());
+      return tagFilter && searchFilter;
+   });
 
    const handleFilterSelect = (tag) => {
       setSelectedTag(tag);
+   };
+
+   const handleSearchChange = (event) => {
+      setSearchInput(event.target.value);
    };
 
    const navigateToAddTask = () => {
@@ -28,23 +35,21 @@ const Home = () => {
    };
 
    return (
-      <div className="home-container w-2/4 m-auto">
+      <div className="home-container w-2/4 m-auto mt-10">
          <input
             type="search"
             placeholder="Search tasks..."
-            value={searchActions.searchValue}
-            onChange={searchActions.handleSearchRemove}
+            value={searchInput}
+            onChange={handleSearchChange}
             className="w-full bg-gray-200 h-12 px-4 rounded-full mb-4"
          />
 
-         <div className="dropdown mb
--4">
+         <div className="dropdown mb-4">
             <div className="flex justify-between">
                <SortTask />
                <FilterTask tags={allTags} onFilterSelect={handleFilterSelect} />
             </div>
          </div>
-         {/* Passing the IDs of filtered tasks to the List component */}
          <List taskIds={filteredTasks.map(task => task.id)} />
          <div className="text-center">
             <button
@@ -53,7 +58,6 @@ const Home = () => {
                + Add New Task
             </button>
          </div>
-
       </div>
    );
 };

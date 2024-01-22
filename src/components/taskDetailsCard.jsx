@@ -13,8 +13,6 @@ const TaskDetailsCard = () => {
       const foundTask = tasks.find(t => t.id === taskId);
       if (foundTask) {
          setTask(foundTask);
-         console.log('Found task:', foundTask);
-         console.log('Checklist items:', foundTask.checklistItems);
       }
    }, [taskId, tasks]);
 

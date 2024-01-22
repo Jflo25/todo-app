@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { TodoContext } from '../contexts/todoProvider';
+import { TodoContext } from '../contexts/TodoProvider';
 
 const SortTask = () => {
    const [dropdownOpen, setDropdownOpen] = useState(false);

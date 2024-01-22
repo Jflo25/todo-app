@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import TodoProvider from './contexts/todoProvider';
-import Home from './pages/home';
-import AddTask from './pages/addTask';
-import EditTask from './pages/editTask'; // Make sure the file name and import name are correct
-import TaskDetails from './pages/taskDetails'; // Make sure the file name and import name are correct
+import TodoProvider from './contexts/TodoProvider';
+import Home from './pages/Home';
+import AddTask from './pages/AddTask';
+import EditTask from './pages/EditTask'; // Make sure the file name and import name are correct
+import TaskDetails from './pages/TaskDetails'; // Make sure the file name and import name are correct
 
 function App() {
   return (

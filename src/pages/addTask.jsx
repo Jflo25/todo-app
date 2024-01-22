@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { TodoContext } from '../contexts/todoProvider';
-import Form from '../components/form';
+import { TodoContext } from '../contexts/TodoProvider';
+import Form from '../components/Form';
 const AddTask = () => {
    const {
       handleSubmit

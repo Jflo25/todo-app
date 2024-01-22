@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TodoContext } from '../contexts/todoProvider';
+import { TodoContext } from '../contexts/TodoProvider';
 import List from '../components/List';
-import SortTask from '../components/sortTask';
-import FilterTask from '../components/filterTask';
+import SortTask from '../components/SortTask';
+import FilterTask from '../components/FilterTask';
 
 const Home = () => {
    const { tasks, sortTasksByPower } = useContext(TodoContext);

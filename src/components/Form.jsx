@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { TodoContext } from '../contexts/todoProvider';
+import { TodoContext } from '../contexts/TodoProvider';
 import { useNavigate } from 'react-router-dom';
 
 

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TodoContext } from '../contexts/todoProvider';
+import { TodoContext } from '../contexts/TodoProvider';
 
 const EditTaskCard = () => {
 

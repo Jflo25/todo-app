@@ -46,17 +46,18 @@ export const TodoProvider = ({ children }) => {
         });
     };
 
-    // Sorting functions
+    // Sorting function
     const sortTasksByPower = () => {
         setTasks(currentTasks => {
-            return [...currentTasks].sort((a, b) => {
-                if (a.priority === b.priority) {
-                    return b.complexity - a.complexity; // Sort by complexity if priorities are equal
-                }
-                return b.priority - a.priority; // Higher priority comes first
-            });
+          return [...currentTasks].sort((a, b) => {
+            // sort by priority in descending order
+            const priorityDifference = b.priority - a.priority;
+            // If priorities are equal, sort by complexity instead 
+            return priorityDifference || b.complexity - a.complexity;
+          });
         });
-    };
+      };
+      
 
     const completionPercentage = () => {
         const completedTasks = tasks.filter(task => task.completed).length;

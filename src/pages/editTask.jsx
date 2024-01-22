@@ -1,5 +1,5 @@
 import React from 'react'
-import EditTaskCard from '../components/editTaskCard'
+import EditTaskCard from '../components/EditTaskCard'
 const EditTask = () => {
    return (
       <div><EditTaskCard /></div>

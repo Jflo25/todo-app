@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import ProgressCircle from './progressCircle';
-import { TodoContext } from '../contexts/todoProvider';
+import ProgressCircle from './ProgressCircle';
+import { TodoContext } from '../contexts/TodoProvider';
 import { useNavigate } from 'react-router-dom';
 import { PencilAltIcon, CheckCircleIcon, CalendarIcon, ArrowUpIcon, ClockIcon, ArrowsExpandIcon } from '@heroicons/react/outline';
 

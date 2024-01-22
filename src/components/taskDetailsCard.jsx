@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CheckCircleIcon, PencilAltIcon, ArrowLeftIcon, TrashIcon, RefreshIcon } from '@heroicons/react/outline';
-import { TodoContext } from '../contexts/todoProvider';
+import { TodoContext } from '../contexts/TodoProvider';
 const TaskDetailsCard = () => {
    const { taskId } = useParams();
    const { tasks, updateTask, removeTask, updateTaskCompletionStatus } = useContext(TodoContext); // Ensure updateTask is imported from TodoContext

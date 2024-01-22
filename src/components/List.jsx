@@ -1,6 +1,6 @@
 // List.js
 import React from 'react';
-import TaskCard from './taskCard'; // Adjust the path as needed
+import TaskCard from './TaskCard'; // Adjust the path as needed
 
 const List = ({ taskIds }) => {
    return (
